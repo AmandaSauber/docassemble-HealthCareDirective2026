@@ -1,0 +1,301 @@
+
+
+
+---
+
+---
+include:
+  - docassemble.AssemblyLine:assembly_line.yml
+  - docassemble.ALAnyState:any_state.yml
+---
+metadata:
+  title: >-
+    Health Care Directive 2026
+  short title: >-
+    Health Care Directive 202
+  description: |-
+    This Health Care Directive allows you to appoint a health care agent to make decisions on your behalf if you are unable to do so. You can also provide specific health care instructions to guide your agent and health care providers. This document ensures your wishes are followed regarding medical treatments, end-of-life decisions, and more. It is an important step in planning for your future health care needs.
+  can_I_use_this_form: |
+    This form is for anyone who wants to ensure their health care preferences are respected. It's especially useful if you want someone to make decisions for you if you're unable to do so.
+  before_you_start: |
+    ### Before you get started
+    - Gather information about who you want to appoint as your health care agent.
+    - Think about your health care preferences and values.
+    
+    ### When you are finished
+    - Sign and date the document.
+    - Have it witnessed or notarized as required.
+  when_you_are_finished: |
+    After completing the Health Care Directive, keep it in a safe place and share copies with your health care agent, family, and medical providers. Ensure that your doctor is aware of your directive and willing to follow your wishes. Regularly review and update the document as needed.
+  efiling_enabled: False
+  integrated_efiling: False
+  integrated_email_filing: False
+  requires_notarization: False
+  unlisted: False
+  landing_page_url: >-
+    https://courtformsonline.org/
+  maturity: production
+  estimated_completion_minutes: ""
+  estimated_completion_delta: ""
+  LIST_topics:
+    - "CO-00-00-00-00"
+  tags:
+    - "CO-00-00-00-00"
+  authors:
+  original_form: []
+  original_form_published_on: ""
+  allowed_courts: []
+  typical_role: "unknown"
+  al_weaver_version: "2.1.0"
+  generated_on: "2026-06-10"
+  languages:
+    - en
+  jurisdiction: "NAM-US-US+MA"
+  review_date: 2026-06-10
+  form_titles:
+    - Health Care Directive 2026
+  form_numbers: []
+  update_notes: |
+---
+code: |
+  # This controls the default country and list of states in address field questions
+  AL_DEFAULT_COUNTRY = "US"
+---
+code: |
+  # This controls the default state in address field questions
+  AL_DEFAULT_STATE = ""
+---
+code: |
+  github_repo_name =  'docassemble-HealthCareDirective2026'
+---
+code: |
+  interview_short_title = 'Create your health care directive now'
+---
+code: |
+  al_form_type = "other_form" 
+---
+objects:
+  - users: ALPeopleList.using(there_are_any=True)
+---
+sections:
+  - your_information: Your Information
+  - agents: Agents
+  - agent_contacts: Agent Contact Details
+  - agent_powers: Agent Powers and Limits
+  - review_health_care_directive_2026: Review your answers
+---
+comment: |
+  Controls order and branching logic for questions specific to this form
+id: interview_order_health_care_directive_2026
+code: |
+  # Set the allowed courts for this interview
+  # Below sets the user_role and user_ask_role by asking a question.
+  # You can set user_ask_role directly instead to either 'plaintiff' or 'defendant'
+  user_ask_role
+  nav.set_section("your_information")
+  user_name
+  nav.set_section("agents")
+  health_care_agent
+  nav.set_section("agent_powers")
+  limits_on_powers
+  nav.set_section("agent_contacts")
+  set_progress(20)
+  agent[0].address.address
+  agent.gather()
+  nav.set_section("agents")
+  agent[0].phone_number
+  nav.set_section("agent_contacts")
+  set_progress(40)
+  agent[1].address.address
+  agent[1].phone_number
+  interview_order_health_care_directive_2026 = True
+---
+comment: |
+  This block includes the logic for standalone interviews.
+  Delete mandatory: True to include in another interview
+mandatory: True
+code: |
+  al_intro_screen
+  health_care_directive_2026_intro
+  interview_order_health_care_directive_2026
+  signature_date
+  # Store anonymous data for analytics / statistics
+  store_variables_snapshot(
+      persistent=True,
+      data={
+          "zip": showifdef("users[0].address.zip"),
+          "reached_interview_end": True,
+      },
+  )
+  health_care_directive_2026_download
+---
+id: Health_Care_Directive_2026
+continue button field: health_care_directive_2026_intro
+question: |
+  Health Care Directive 2026
+subquestion: |
+  ### Before you get started
+  - Gather information about who you want to appoint as your health care agent.
+  - Think about your health care preferences and values.
+  
+  ### When you are finished
+  - Sign and date the document.
+  - Have it witnessed or notarized as required.
+
+  This form is for anyone who wants to ensure their health care preferences are respected. It's especially useful if you want someone to make decisions for you if you're unable to do so.
+
+---
+id: Your Name and Title
+question: |
+  Your Name and Title
+fields:
+  - "Your full name": user_name
+  - "Your name or title": user
+---
+id: Health Care Agent Information
+question: |
+  Health Care Agent Information
+subquestion: |
+  Please have the details of your health care agent ready.
+fields:
+  - "Name of health care agent": health_care_agent
+  - "Relationship of health care agent": agent[0].relationship
+  - "Relationship of alternate agent": agent[1].relationship
+---
+id: Limits on Agent s Powers
+question: |
+  Limits on Agent's Powers
+fields:
+  - "Limits on agent's powers": limits_on_powers
+  - "Thoughts on agent's powers": comments_on_agents_powers
+---
+id: preview health_care_directive_2026
+question: |
+  Preview your form before you sign it
+subquestion: |
+  Here is a preview of the form you will sign on the next page.   
+  
+  ${ al_recipient_bundle.as_pdf(key='preview') }
+
+  Click the image to open it in a new tab. Click the "Edit answers" button
+  to edit your answers.
+
+  ${ action_button_html(url_action('review_health_care_directive_2026'), label='Edit answers', color='info') }
+  
+  Please come back to this window to finish and sign your form.
+continue button field: health_care_directive_2026_preview_question    
+---
+code: |
+  signature_fields = []
+---
+id: health care directive 2026 review screen
+event: review_health_care_directive_2026
+question: |
+  Review your answers
+review:
+  - Edit: comments_on_agents_powers
+    button: |
+      **Thoughts on agent's powers**:
+      ${ comments_on_agents_powers }
+  - Edit: agent.revisit
+    button: |
+      **Agent**
+
+      % for item in agent:
+        * ${ item }
+      % endfor
+  - Edit: health_care_agent
+    button: |
+      **Name of health care agent**:
+      ${ health_care_agent }
+  - Edit: user_name
+    button: |
+      **Your full name**:
+      ${ user_name }
+  - Edit: user
+    button: |
+      **Your name or title**:
+      ${ user }
+  - Edit: limits_on_powers
+    button: |
+      **Limits on agent's powers**:
+      ${ limits_on_powers }
+---
+id: edit agent
+continue button field: agent.revisit
+question: |
+  Edit agent
+subquestion: |
+  ${ agent.table }
+
+  ${ agent.add_action() }
+---
+table: agent.table
+rows: agent
+columns:
+  - Address: |
+      row_item.address.block() if defined("row_item.address.address") else ""
+  - Name: |
+      row_item.name_full() if defined("row_item.name.first") else ""
+  - Phone number: |
+      row_item.phone_number if defined("row_item.phone_number") else ""
+  - Relationship: |
+      row_item.relationship if defined("row_item.relationship") else ""
+edit:
+  - address.address
+  - name.first
+  - phone_number
+  - relationship
+confirm: True
+
+---
+id: download health_care_directive_2026
+event: health_care_directive_2026_download
+question: |
+  All done
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  View, download and send your form below. Click the "Edit answers" button to fix any mistakes.
+
+  ${ action_button_html(url_action('review_health_care_directive_2026'), label='Edit answers', color='info') }
+  
+  
+  ${ al_user_bundle.download_list_html() }
+  
+
+  ${ al_user_bundle.send_button_html(show_editable_checkbox=True) }
+
+progress: 100
+---
+# ALDocument objects specify the metadata for each template
+objects:
+  - health_care_directive_2026_Post_interview_instructions: ALDocument.using(title="Instructions", filename="health_care_directive_2026_next_steps.docx", enabled=True, has_addendum=False)
+  - health_care_directive_2026_attachment: ALDocument.using(title="Health Care Directive 2026", filename="health_care_directive_2026", enabled=True, has_addendum=False, )
+---
+# Bundles group the ALDocuments into separate downloads, such as for court and for the user
+objects:
+  - al_user_bundle: ALDocumentBundle.using(elements=[health_care_directive_2026_Post_interview_instructions, health_care_directive_2026_attachment], filename="health_care_directive_2026", title="All forms to download for your records", enabled=True)
+  - al_recipient_bundle: ALDocumentBundle.using(elements=[health_care_directive_2026_attachment],  filename="health_care_directive_2026", title="All forms to file", enabled=True)
+---
+# Each attachment defines a key in an ALDocument. We use `i` as the placeholder here so the same template is 
+# used for "preview" and "final" keys, and logic in the template checks the value of 
+# `i` to show or hide the user's signature
+attachment:
+  name: Post-interview-Instructions
+  filename: health_care_directive_2026_next_steps
+  docx template file: health_care_directive_2026_next_steps.docx
+  variable name: health_care_directive_2026_Post_interview_instructions[i]
+  skip undefined: True
+  tagged pdf: True
+---
+attachment:
+  name: health care directive 2026
+  filename: health_care_directive_2026
+  variable name: health_care_directive_2026_attachment[i]
+  skip undefined: True
+  docx template file: health_care_directive_2026.docx
+  tagged pdf: True
+
+
+

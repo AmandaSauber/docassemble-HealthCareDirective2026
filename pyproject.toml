@@ -1,0 +1,32 @@
+[build-system]
+requires = [
+    "setuptools>=80.9.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "docassemble.HealthCareDirective2026"
+version = "1.0"
+description = "Health Care Directive 2026"
+readme = "README.md"
+authors = [
+    { name = "", email = "alsauber@mnlegalservices.org" },
+]
+dependencies = [
+    "docassemble.ALAnyState @ git+https://github.com/SuffolkLITLab/docassemble-ALAnyState.git@main",
+    "docassemble.ALWeaver @ git+https://github.com/SuffolkLITLab/docassemble-ALWeaver.git@main",
+    "docassemble.AssemblyLine @ git+https://github.com/SuffolkLITLab/docassemble-AssemblyLine.git@main",
+    "docassemble.GithubFeedbackForm @ git+https://github.com/SuffolkLITLab/docassemble-GithubFeedbackForm.git@main",
+]
+license = "MIT"
+license-files = [
+    "LICENSE",
+]
+
+[project.urls]
+Homepage = "https://courtformsonline.org"
+
+[tool.setuptools.packages.find]
+where = [
+    ".",
+]
